@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_community"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_fire"
+            android:text="인기"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/btn_new"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_new"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_fire"
+            android:text="최신"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/btn_top"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_favorite"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_top"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_fire"
+            android:text="TOP"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_new"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_post_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
