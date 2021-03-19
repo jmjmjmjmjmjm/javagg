@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnBackPressedList
         mDrawerLayout = findViewById(R.id.drawerLayout);     // 드로우레이아웃
 
 
-        
         //최초 화면 밑에 네비
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment()).commit();
 
