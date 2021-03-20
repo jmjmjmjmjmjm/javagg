@@ -18,10 +18,10 @@ public class JoinItem {
     public String name;
 
     @SerializedName("entries")
-    public List<JoinData> body;
+    public List<JoinData> entries;
 
     public String toString(){
-        return "JoinItem{"+"body="+body+'}';
+        return "JoinItem{"+"entries="+entries+'}';
     }
 
 }

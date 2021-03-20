@@ -14,7 +14,7 @@
         android:text="순위" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/summonerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:textSize="10dp"
-            android:text="티어" />
+            android:text="첼린져" />
         <TextView
-            android:id="@+id/lp"
+            android:id="@+id/leaguePoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10dp"

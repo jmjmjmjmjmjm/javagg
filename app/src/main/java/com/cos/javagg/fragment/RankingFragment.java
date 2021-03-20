@@ -25,7 +25,11 @@ import com.cos.javagg.dto.JoinItem;
 import com.cos.javagg.dto.RetrofitClient;
 import com.google.gson.JsonArray;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,25 +46,47 @@ public class RankingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ranked,container,false);
+        View view = inflater.inflate(R.layout.fragment_ranked, container, false);
 
-        mDrawerLayout=view.findViewById(R.id.drawerLayout);
+        mDrawerLayout = view.findViewById(R.id.drawerLayout);
         draw = view.findViewById(R.id.draw);
 
         drawL();    // 드로우레이아웃
 
 
-        /*연습*/
-
+        /*리사이클러뷰 */
+        dataInfo = new ArrayList<>();
         ApiService apiInterface = RetrofitClient.getClient().create(ApiService.class);
         Call<JoinItem> call = apiInterface.getData();
+        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setReverseLayout(true);  // 리사이클러뷰 반전
+        mLayoutManager.setStackFromEnd(true);   // 리사이클러뷰 반전
+        RecyclerView recyclerView = view.findViewById(R.id.rank_rc);
+        recyclerView.setLayoutManager(mLayoutManager);
+
         call.enqueue(new Callback<JoinItem>() {
 
             @Override
             public void onResponse(Call<JoinItem> call, Response<JoinItem> response) {
                 joinItem = response.body();
-                Log.d("MainActivity", joinItem.toString());
+                Log.d("MainActivity", joinItem.entries.toString());
+                dataInfo = joinItem.entries;
+
+                Collections.sort(dataInfo, new Comparator<JoinData>() {
+                    @Override
+                    public int compare(JoinData o1, JoinData o2) {
+                        return o1.getLeaguePoints().compareTo(o2.getLeaguePoints());
+                    }
+                });
+
+
+                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                RankedAdapter adapter = new RankedAdapter(getActivity().getApplicationContext(), dataInfo);
+                recyclerView.setAdapter(adapter);
+
             }
+
 
             @Override
             public void onFailure(Call<JoinItem> call, Throwable t) {
@@ -68,28 +94,13 @@ public class RankingFragment extends Fragment {
             }
         });
 
-
-        /*연습끝*/
-
-        ArrayList<String> list = new ArrayList<>();     // 데이터담기
-        for (int i=0; i<100; i++) {
-            list.add(String.format("%d", i)) ;
-        }
-
-        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-        RecyclerView recyclerView = view.findViewById(R.id.rank_rc) ;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())) ;
-
-        // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-        RankedAdapter adapter = new RankedAdapter(list) ;
-        recyclerView.setAdapter(adapter) ;
+        /*리사이클러뷰 끝*/
 
         return view;
     }
 
 
-
-    public void drawL(){
+    public void drawL() {
         draw.setOnClickListener(v -> {
             mDrawerLayout.openDrawer(GravityCompat.START);
         });
