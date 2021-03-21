@@ -76,7 +76,8 @@ public class RankingFragment extends Fragment {
                 Collections.sort(dataInfo, new Comparator<JoinData>() {
                     @Override
                     public int compare(JoinData o1, JoinData o2) {
-                        return o1.getLeaguePoints().compareTo(o2.getLeaguePoints());
+                        return Integer.compare(o1.getLeaguePoints(), o2.getLeaguePoints());  //숫자비교
+                        //return o1.getLeaguePoints().compareTo(o2.getLeaguePoints());      // 문자비교
                     }
                 });
 

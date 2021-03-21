@@ -30,7 +30,7 @@ public class JoinData {
     @SerializedName("summonerId")
     private String summonerId;
     @SerializedName("leaguePoints")
-    private String leaguePoints;
+    private int leaguePoints;
     @SerializedName("losses")
     private String losses;
 
