@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class JoinData {
     @SerializedName("wins")
     private String wins;
@@ -33,6 +32,7 @@ public class JoinData {
     private int leaguePoints;
     @SerializedName("losses")
     private String losses;
+
 
 
 }

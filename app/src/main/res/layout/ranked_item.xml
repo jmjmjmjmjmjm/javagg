@@ -12,6 +12,12 @@
         android:layout_gravity="center"
         android:textSize="10dp"
         android:text="순위" />
+    <ImageView
+        android:id="@+id/rank_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        />
 
     <TextView
         android:id="@+id/summonerName"
