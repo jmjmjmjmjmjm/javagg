@@ -67,11 +67,11 @@ public class RankedAdapter extends RecyclerView.Adapter<RankedAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RankedAdapter.ViewHolder holder, int position) {
 
-//        Glide
-//                .with(micon)
-//                .load("http://ddragon.leagueoflegends.com/cdn/11.7.1/img/profileicon/" +statusDtos.get(position)+ ".png")
-//                .centerCrop()
-//                .into(micon);
+        Glide
+                .with(micon)
+                .load("http://ddragon.leagueoflegends.com/cdn/11.7.1/img/profileicon/" +4021+ ".png")
+                .centerCrop()
+                .into(micon);
 
         holder.mname.setText("" + mData.get(position).getSummonerName()); // 유저이름
         holder.mlp.setText("" + mData.get(position).getLeaguePoints());  // 리그포인트

@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,18 +38,15 @@ public class RankingFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ImageButton draw;
     private JoinItem joinItem;
-    List<JoinData> dataInfo;
-    StatusData statusData;
-    ArrayList<String> statusInfo;
+    List<JoinData> dataInfo = new ArrayList<JoinData>();
+    ArrayList<StatusDto> statisdto = new ArrayList<StatusDto>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ranked, container, false);
-
         mDrawerLayout = view.findViewById(R.id.drawerLayout);
         draw = view.findViewById(R.id.draw);
-
         drawL();    // 드로우레이아웃
 
 
@@ -62,37 +60,14 @@ public class RankingFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);   // 리사이클러뷰 반전
         RecyclerView recyclerView = view.findViewById(R.id.rank_rc);
         recyclerView.setLayoutManager(mLayoutManager);
-        statusInfo=new ArrayList<>();
 
 
         call.enqueue(new Callback<JoinItem>() {
-
             @Override
             public void onResponse(Call<JoinItem> call, Response<JoinItem> response) {
                 joinItem = response.body();
                 dataInfo = joinItem.entries;
-
-
-                Log.d("MainActivity", ""+dataInfo.size());
-
-                for (int i =0; i<dataInfo.size();i++) {
-                    Log.d("몇번째?", "" + i);
-                    Call<StatusData> call2 = apiInterface.getStatus(dataInfo.get(i).getSummonerId());
-                    call2.enqueue(new Callback<StatusData>() {
-                        @Override
-                        public void onResponse(Call<StatusData> call, Response<StatusData> response) {
-                            statusInfo.add(response.body().getProfileIconId());
-                            Log.d("아이콘넘버", "" + response.body().getProfileIconId());
-                        }
-
-                        @Override
-                        public void onFailure(Call<StatusData> call, Throwable t) {
-                            Log.d("아이콘불러오기 이상해", "");
-                        }
-                    });
-                }
-
-
+                Log.d("엔트리값", "" + dataInfo.get(299));
 
                 Collections.sort(dataInfo, new Comparator<JoinData>() {
                     @Override
@@ -101,14 +76,24 @@ public class RankingFragment extends Fragment {
                         //return o1.getLeaguePoints().compareTo(o2.getLeaguePoints());      // 문자비교
                     }
                 });
-
+                new Thread(new Runnable() {
+                    @SneakyThrows
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 20; i++) {
+                            if (dataInfo.get(i).getSummonerId()!=null) {
+                                icon(dataInfo.get(i).getSummonerId());
+                                Log.d("엔트리" + i, "" + dataInfo.get(i).getSummonerId());
+                            }
+                        }
+                    }
+                }).start();
 
                 // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
                 RankedAdapter adapter = new RankedAdapter(getActivity().getApplicationContext(), dataInfo);
                 recyclerView.setAdapter(adapter);
-
+                /*리사이클러뷰 끝*/
             }
-
 
             @Override
             public void onFailure(Call<JoinItem> call, Throwable t) {
@@ -116,11 +101,35 @@ public class RankingFragment extends Fragment {
             }
         });
 
-        /*리사이클러뷰 끝*/
-
         return view;
     }
 
+    ApiService apiInterface = RetrofitClient.getClient().create(ApiService.class);
+
+    public void icon(String i) {
+
+        if (i == null) {
+            Log.d("스톱!", "!!!!!!!!!!!!!!!!!!!!!!!!");
+        } else {
+            Call<StatusData> call = apiInterface.getStatus(i);
+            call.enqueue(new Callback<StatusData>() {
+                @Override
+                public void onResponse(Call<StatusData> call, Response<StatusData> response) {
+                    if (response.body().getProfileIconId() == null) {
+                        Log.d("스톱!", "!!!!!!!!!!!!!!!!!!!!!!!!");
+                    } else {
+                        statisdto.add(new StatusDto(i, response.body().getProfileIconId()));
+                        Log.d("아이템몇번째?", "" + statisdto);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StatusData> call, Throwable t) {
+                    Log.d("아이콘 배열생성", "아이콘배열생성안됨");
+                }
+            });
+        }
+    }
 
     public void drawL() {
         draw.setOnClickListener(v -> {
